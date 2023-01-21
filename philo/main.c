@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:27:20 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/21 20:25:43 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/21 21:19:02 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int ac, char **av)
 	if (create_data(&data, ac, av))
 		return (2);
 	print_input(data.input);
+	print_philo(data);
 	// if (data.input.n_philo == 1)
 	// {
 	// 	one_philo(&data);
@@ -49,8 +50,8 @@ void	print_philo(t_data data)
 		printf("********** Philo number [%d] **********\n\n", philo[i].pos);
 		printf("  Pos : [%d]\n", philo[i].pos);
 		printf("  Meal count : [%d]\n", philo[i].meal_count);
-		i++;
 		printf("\n");
+		i++;
 	}
 }
 
