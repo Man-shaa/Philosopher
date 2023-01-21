@@ -1,0 +1,58 @@
+NAME		=	philo
+
+CORE_DIR	=	core/
+
+CREATE_DIR	=	create/
+
+PRINT_DIR	=	print/
+
+FREE_DIR	=	free/
+
+PARSING_DIR	=	parsing/
+
+UTILS_DIR	=	utils/
+
+SRCS		=	main.c \
+				${CREATE_DIR}create_data.c \
+				${PARSING_DIR}parsing.c \
+				${PRINT_DIR}print.c \
+				${UTILS_DIR}utils.c
+				# ${CORE_DIR}actions.c \
+				# ${CORE_DIR}routine.c \
+				# ${CORE_DIR}time.c \
+				# ${CREATE_DIR}create_fork.c \
+				# ${CREATE_DIR}create_threads.c \
+				# ${FREE_DIR}free.c \
+				# ${UTILS_DIR}utils_str.c \
+
+OBJS		=	${SRCS:.c=.o}
+
+CC			=	clang
+
+CFLAGS		=	-Wall -Werror -Wextra -g3
+
+RM			=	rm -rf
+
+GREEN		=	\033[1;32m
+
+DEFAULT		=	\033[0m
+
+.c.o:
+		${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
+
+$(NAME):	${OBJS}
+		${CC} -pthread ${CFLAGS} ${OBJS} -o ${NAME}
+
+all:		${NAME}
+
+clean:		
+		${RM} ${OBJS}
+
+fclean:		clean
+		${RM} ${NAME}
+		@echo "\n${GREEN}Everything cleaned${DEFAULT}"
+
+re:			fclean
+		$(MAKE) all -j
+
+.PHONY:		all clean fclean re
