@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 21:03:24 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 23:05:43 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define TUTO			"./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 # define N_PHILO		"[number_of_philosophers] must be a non null \
-positive integer"
+positive integer between 1 and 200"
 # define INT			"All parameters must be a positive integer"
 # define NUMBER			"All parameters must be numbers"
 # define THREADS		"Error while creating/joining threads"
@@ -74,13 +74,16 @@ typedef struct s_data
 {
 	bool			philo_dead;
 	long long		t_start;
-	pthread_t		checker;
 	pthread_mutex_t	stop;
 	pthread_mutex_t	writing;
 	pthread_mutex_t	fork[200];
 	t_input			input;
 	t_philo			philo[200];
 }				t_data;
+
+
+int	sub_check(t_data *data, t_philo *philo);
+int	check_death(t_data	*data, int	*stop);
 
 // *********************************** CORE ***********************************
 
@@ -90,8 +93,11 @@ int			sleeping(t_philo *philo, t_data *data);
 int			thinking(t_philo *philo, t_data *data);
 
 // routine.c
+void		*check_dead(void *arg);
 void		*routine(void *arg);
+int			is_philo_dead(t_data *data, int *i);
 int			life_loop(t_philo *philo);
+void		one_philo(t_data *data);
 
 // time.c
 long long	get_time(void);
