@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 20:16:42 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 13:47:33 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 17:25:27 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,7 @@ void	create_data(t_data *data, int ac, char **av)
 	data->t_start = 0;
 	init_input(&data->input, ac, av);
 	init_philo(data);
-	// if (create_fork(data))
-	// 	return (err_msg(FORK, 2), ft_free(data->philo), 2);
+	init_mutex(data);
 }
 
 void	init_input(t_input *input, int ac, char **av)

@@ -6,10 +6,9 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 17:03:42 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 19:59:45 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef PHILO_H
 # define PHILO_H
@@ -18,6 +17,7 @@
 # include <stdio.h>
 # include <stddef.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <pthread.h>
 # include <sys/time.h>
 
@@ -30,7 +30,8 @@
 
 // error
 # define MALLOC			"Error caused by a malloc"
-# define MUTEX			"Error caused by a mutex init"
+# define MUTEX_INIT		"Error caused by a mutex init"
+# define MUTEX_DES		"Error caused by a mutex destruction"
 # define TUTO			"./philo number_of_philosophers time_to_die \
 time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 # define N_PHILO		"[number_of_philosophers] must be a non null \
@@ -51,11 +52,13 @@ positive integer"
 
 typedef struct s_philo
 {
-	int			pos;
-	int			meal_count;
-	pthread_t	thread;
-	long long	t_until_die;
-	void		*data_mem;
+	int				pos;
+	int				meal_count;
+	pthread_t		thread;
+	pthread_mutex_t	*r_fork;
+	pthread_mutex_t	*l_fork;
+	long long		t_until_die;
+	void			*data_mem;
 }				t_philo;
 
 typedef struct s_input
@@ -69,7 +72,7 @@ typedef struct s_input
 
 typedef struct s_data
 {
-	int				philo_dead;
+	bool			philo_dead;
 	long long		t_start;
 	pthread_t		checker;
 	pthread_mutex_t	stop;
@@ -103,7 +106,11 @@ void		init_input(t_input *input, int ac, char **av);
 void		init_philo(t_data *data);
 
 // create_threads.c
-int 		create_threads(t_data *data);
+int			init_mutex(t_data *data);
+int			destroy_all_mutex(t_data *data);
+
+// create_threads.c
+int			create_threads(t_data *data);
 int			join_threads(t_data *data);
 
 // *********************************** FREE ***********************************

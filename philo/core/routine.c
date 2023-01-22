@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 13:47:47 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 16:56:54 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 20:12:49 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,16 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	data_mem = philo->data_mem;
-	life_loop(philo);
+	if (data_mem->input.n_meal)
+	{
+		while (!data_mem->philo_dead && philo->meal_count < data_mem->input.n_meal)
+			life_loop(philo);
+	}
+	else
+	{
+		while (!data_mem->philo_dead)
+			life_loop(philo);
+	}
 	return (NULL);
 }
 

@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:36:03 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 17:02:58 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 18:07:08 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ long long	get_time_from_start(long long time_to_wait)
 }
 
 // fonction usleep avec plus de precision
-void	 ft_usleep(t_data *data, long int time_in_ms)
+void	ft_usleep(t_data *data, long int time_in_ms)
 {
 	long int	start_time;
 	int			i;
