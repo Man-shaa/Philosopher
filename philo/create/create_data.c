@@ -6,13 +6,13 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 20:16:42 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/21 21:20:54 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 13:47:33 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	create_data(t_data *data, int ac, char **av)
+void	create_data(t_data *data, int ac, char **av)
 {
 	data->checker = 0;
 	data->philo_dead = 0;
@@ -21,10 +21,8 @@ int	create_data(t_data *data, int ac, char **av)
 	init_philo(data);
 	// if (create_fork(data))
 	// 	return (err_msg(FORK, 2), ft_free(data->philo), 2);
-	return (0);
 }
 
-// Initialise la structure t_input avec les arguments recus
 void	init_input(t_input *input, int ac, char **av)
 {
 	input->n_philo = ft_atoi(av[1]);
@@ -49,6 +47,7 @@ void	init_philo(t_data *data)
 		data->philo[i].pos = i;
 		data->philo[i].t_until_die = 0;
 		data->philo[i].thread = 0;
+		data->philo[i].data_mem = data;
 		i++;
 	}
 }

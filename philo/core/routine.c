@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   routine.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/21 18:32:45 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 15:16:57 by msharifi         ###   ########.fr       */
+/*   Created: 2023/01/22 13:47:47 by msharifi          #+#    #+#             */
+/*   Updated: 2023/01/22 16:56:54 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	err_msg(char *s1, int ret_val)
+void	*routine(void *arg)
 {
-	if (s1)
-	{
-		write(STDERR_FILENO, s1, ft_strlen(s1));
-		write(STDERR_FILENO, "\n", 1);
-	}
-	return (ret_val);
+	t_philo	*philo;
+	t_data	*data_mem;
+
+	philo = (t_philo *)arg;
+	data_mem = philo->data_mem;
+	life_loop(philo);
+	return (NULL);
 }
 
-int	print_action(t_philo *philo, t_data *data, char *action)
+int	life_loop(t_philo *philo)
 {
-	pthread_mutex_lock(&data->writing);
-	printf("%lld	%d %s", get_time_from_start(data->t_start), philo->pos, action);
-	pthread_mutex_unlock(&data->writing);
+	eating(philo, philo->data_mem);
+	sleeping(philo, philo->data_mem);
+	thinking(philo, philo->data_mem);
 	return (0);
 }

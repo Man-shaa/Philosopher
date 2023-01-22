@@ -6,11 +6,23 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:31:10 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/21 18:31:36 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 13:50:37 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		i++;
+	return (i);
+}
 
 long	ft_atoi(const char *str)
 {

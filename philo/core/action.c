@@ -1,31 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/21 18:32:45 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 15:16:57 by msharifi         ###   ########.fr       */
+/*   Created: 2023/01/22 14:58:50 by msharifi          #+#    #+#             */
+/*   Updated: 2023/01/22 17:06:28 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	err_msg(char *s1, int ret_val)
+int	eating(t_philo *philo, t_data *data)
 {
-	if (s1)
-	{
-		write(STDERR_FILENO, s1, ft_strlen(s1));
-		write(STDERR_FILENO, "\n", 1);
-	}
-	return (ret_val);
+	print_action(philo, data, EATING);
+	ft_usleep(data, data->input.to_eat);
+	return (0);
 }
 
-int	print_action(t_philo *philo, t_data *data, char *action)
+int	sleeping(t_philo *philo, t_data *data)
 {
-	pthread_mutex_lock(&data->writing);
-	printf("%lld	%d %s", get_time_from_start(data->t_start), philo->pos, action);
-	pthread_mutex_unlock(&data->writing);
+	print_action(philo, data, SLEEPING);
+	ft_usleep(data, data->input.to_sleep);
+	return (0);
+}
+
+int	thinking(t_philo *philo, t_data *data)
+{
+	print_action(philo, data, THINKING);
 	return (0);
 }

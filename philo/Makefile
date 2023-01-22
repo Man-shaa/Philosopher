@@ -13,17 +13,14 @@ PARSING_DIR	=	parsing/
 UTILS_DIR	=	utils/
 
 SRCS		=	main.c \
+				${CORE_DIR}action.c \
+				${CORE_DIR}routine.c \
+				${CORE_DIR}time.c \
 				${CREATE_DIR}create_data.c \
+				${CREATE_DIR}create_threads.c \
 				${PARSING_DIR}parsing.c \
 				${PRINT_DIR}print.c \
 				${UTILS_DIR}utils.c
-				# ${CORE_DIR}actions.c \
-				# ${CORE_DIR}routine.c \
-				# ${CORE_DIR}time.c \
-				# ${CREATE_DIR}create_fork.c \
-				# ${CREATE_DIR}create_threads.c \
-				# ${FREE_DIR}free.c \
-				# ${UTILS_DIR}utils_str.c \
 
 OBJS		=	${SRCS:.c=.o}
 

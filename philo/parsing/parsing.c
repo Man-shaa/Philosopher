@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:15 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/21 18:29:02 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 14:16:14 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ int	parsing(int ac, char **av)
 {
 	if (ac != 5 && ac != 6)
 		return (err_msg(TUTO, 1));
-	if (ft_atoi(av[1]) <= 0)
+	if (ft_atoi(av[1]) <= 0 || ft_atoi(av[1]) > 200)
 		return (err_msg(N_PHILO, 2));
 	if (is_positive_int(ac, av))
 		return (3);

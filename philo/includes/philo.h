@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/21 21:16:29 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 17:03:42 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,29 @@ typedef struct s_data
 // *********************************** CORE ***********************************
 
 // actions.c
+int			eating(t_philo *philo, t_data *data);
+int			sleeping(t_philo *philo, t_data *data);
+int			thinking(t_philo *philo, t_data *data);
 
 // routine.c
+void		*routine(void *arg);
+int			life_loop(t_philo *philo);
 
 // time.c
+long long	get_time(void);
+long long	get_time_from_start(long long time);
+void		ft_usleep(t_data *data, long int time_in_ms);
 
 // *********************************** CREATE *********************************
 
 // create_data.c
-int			create_data(t_data *data, int ac, char **av);
+void		create_data(t_data *data, int ac, char **av);
 void		init_input(t_input *input, int ac, char **av);
 void		init_philo(t_data *data);
 
-// create_fork.c
-
 // create_threads.c
+int 		create_threads(t_data *data);
+int			join_threads(t_data *data);
 
 // *********************************** FREE ***********************************
 
@@ -113,10 +121,12 @@ int			parsing(int ac, char **av);
 
 // print.c
 int			err_msg(char *s1, int ret_val);
+int			print_action(t_philo *philo, t_data *data, char *action);
 
 // *********************************** UTILS **********************************
 
 // utils.c
+int			ft_strlen(char *str);
 long		ft_atoi(const char *str);
 void		*ft_calloc(size_t n, size_t size);
 
