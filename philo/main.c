@@ -6,11 +6,19 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:27:20 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 18:12:29 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 21:22:10 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
+
+void	one_philo(t_data *data)
+{
+	data->t_start = get_time();
+	printf("0	1%s", TAKEN_FORK);
+	ft_usleep(data, data->input.to_die);
+	printf("%ld	1%s", data->input.to_die, PHILO_DIED);
+}
 
 int	main(int ac, char **av)
 {
@@ -18,11 +26,14 @@ int	main(int ac, char **av)
 
 	if (parsing(ac, av))
 		return (1);
-	create_data(&data, ac, av);
-	if (create_threads(&data))
+	if (create_data(&data, ac, av))
 		return (2);
-	if (destroy_all_mutex(&data))
+	if (data.input.n_philo == 1)
+		return (one_philo(&data), 0);
+	if (create_threads(&data))
 		return (3);
+	if (destroy_all_mutex(&data))
+		return (4);
 	return (0);
 }
 

@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 19:59:45 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/22 21:03:24 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,13 @@ void		ft_usleep(t_data *data, long int time_in_ms);
 // *********************************** CREATE *********************************
 
 // create_data.c
-void		create_data(t_data *data, int ac, char **av);
+int			create_data(t_data *data, int ac, char **av);
 void		init_input(t_input *input, int ac, char **av);
 void		init_philo(t_data *data);
 
 // create_threads.c
 int			init_mutex(t_data *data);
+int			destroy_until(t_data *data, int n);
 int			destroy_all_mutex(t_data *data);
 
 // create_threads.c
