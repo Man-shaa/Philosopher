@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:23:45 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 15:58:40 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:24:09 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 int	init_mutex(t_data *data)
 {
-	int				i;
-
-	i = 0;
 	if (pthread_mutex_init(&data->writing, NULL))
 		return (err_msg(MUTEX_INIT, 1));
 	if (pthread_mutex_init(&data->stop, NULL))
@@ -27,7 +24,15 @@ int	init_mutex(t_data *data)
 	if (pthread_mutex_init(&data->meal, NULL))
 		return (pthread_mutex_destroy(&data->writing),
 			pthread_mutex_destroy(&data->stop),
-				pthread_mutex_destroy(&data->time), err_msg(MUTEX_INIT, 2));
+			pthread_mutex_destroy(&data->time), err_msg(MUTEX_INIT, 2));
+	return (init_fork_mutex(data));
+}
+
+int	init_fork_mutex(t_data *data)
+{
+	int	i;
+
+	i = 0;
 	while (i < data->input.n_philo)
 	{
 		if (pthread_mutex_init(&data->fork[i], NULL))

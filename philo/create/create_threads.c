@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 17:14:28 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:22:55 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	join_threads(t_data *data)
 	int	i;
 
 	i = 0;
-	if (pthread_join(data->checker, NULL)) // apres ???
+	if (pthread_join(data->checker, NULL))
 		return (err_msg(THREADS, 1));
 	while (i < data->input.n_philo)
 	{
