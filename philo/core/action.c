@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:58:50 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 14:54:51 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:02:44 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,22 +17,25 @@ int	eating(t_philo *philo, t_data *data)
 	{
 		pthread_mutex_lock(philo->r_fork);
 		if (print_action(philo, data, TAKEN_FORK))
-			return (1);
+			return (pthread_mutex_unlock(philo->r_fork), 1);
 		pthread_mutex_lock(philo->l_fork);
 		if (print_action(philo, data, TAKEN_FORK))
-			return (1);
+			return (pthread_mutex_unlock(philo->r_fork),
+			pthread_mutex_unlock(philo->l_fork), 1);
 	}
 	else
 	{
 		pthread_mutex_lock(philo->l_fork);
 		if (print_action(philo, data, TAKEN_FORK))
-			return (1);
+			return (pthread_mutex_unlock(philo->l_fork), 1);
 		pthread_mutex_lock(philo->r_fork);
 		if (print_action(philo, data, TAKEN_FORK))
-			return (1);
+			return (pthread_mutex_unlock(philo->l_fork),
+			pthread_mutex_unlock(philo->r_fork), 1);
 	}
 	if (print_action(philo, data, EATING))
-		return (1);
+		return (pthread_mutex_unlock(philo->l_fork),
+			pthread_mutex_unlock(philo->r_fork), 1);
 	pthread_mutex_lock(&data->time);
 	philo->t_until_die = get_time();
 	pthread_mutex_unlock(&data->time);

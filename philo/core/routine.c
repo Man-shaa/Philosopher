@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 13:47:47 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 14:57:11 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:06:45 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,18 @@ int	life_loop(t_philo *philo, t_data *data, int *stop)
 	return (0);
 }
 
+int	has_eaten(t_data *data, int i)
+{
+	pthread_mutex_lock(&data->meal);
+	if (data->philo[i].meal_count < data->input.n_meal)
+	{
+		pthread_mutex_unlock(&data->meal);
+		return (0);
+	}
+	pthread_mutex_unlock(&data->meal);
+	return (1);
+}
+
 void	*check_dead(void *arg)
 {
 	int		i;
@@ -76,7 +88,7 @@ void	*check_dead(void *arg)
 	data = (t_data *)arg;
 	if (data->input.n_meal)
 	{
-		while (!data->philo_dead && data->philo[i].meal_count < data->input.n_meal)
+		while (!data->philo_dead && !has_eaten(data, i))
 			if (is_philo_dead(data, &i))
 				return (NULL);
 	}
@@ -100,11 +112,13 @@ int	is_philo_dead(t_data *data, int *i)
 	pthread_mutex_unlock(&data->time);
 	if (time > data->input.to_die)
 	{
-		printf("HAAAAAAAAAAAAAAAAAAAAA\n\n\n");
 		pthread_mutex_lock(&data->stop);
 		data->philo_dead = true;
 		pthread_mutex_unlock(&data->stop);
-		print_action(&data->philo[(*i)], data, PHILO_DIED);
+		pthread_mutex_lock(&data->writing);
+		ft_usleep(data, 4);
+		printf("%lld	%d is dead\n", get_time_from_start(data->t_start), *i + 1);
+		pthread_mutex_unlock(&data->writing);
 		return (1);
 	}
 	ft_usleep(data, 1);
