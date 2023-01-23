@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 23:13:47 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 14:39:32 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ int	create_threads(t_data *data)
 
 	i = 0;
 	data->t_start = get_time();
-	// if (pthread_create(&data->checker, NULL, check_dead, (void *)data))
-	// 	return (err_msg(THREADS, 1));
+	if (pthread_create(&data->checker, NULL, check_dead, (void *)data))
+		return (err_msg(THREADS, 1));
 	while (i < data->input.n_philo)
 	{
 		if (pthread_create(&data->philo[i].thread, NULL, &routine,
@@ -38,19 +38,10 @@ int	create_threads(t_data *data)
 int	join_threads(t_data *data)
 {
 	int	i;
-	// int	stop;
 
 	i = 0;
-	// stop = 0;
-	// if (pthread_join(data->checker, NULL))
-	// 	return (err_msg(THREADS, 1));
-	/*
-	while (42)
-	{
-		if (check_death(data, &stop) == 0)
-			break ;
-	}
-	*/
+	if (pthread_join(data->checker, NULL))
+		return (err_msg(THREADS, 1));
 	while (i < data->input.n_philo)
 	{
 		if (pthread_join(data->philo[i].thread, NULL))

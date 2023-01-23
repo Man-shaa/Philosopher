@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 23:05:43 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 14:52:24 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,31 +72,31 @@ typedef struct s_input
 
 typedef struct s_data
 {
+	pthread_t		checker;
 	bool			philo_dead;
 	long long		t_start;
 	pthread_mutex_t	stop;
+	pthread_mutex_t	meal;
+	pthread_mutex_t	time;
 	pthread_mutex_t	writing;
 	pthread_mutex_t	fork[200];
 	t_input			input;
 	t_philo			philo[200];
 }				t_data;
 
-
-int	sub_check(t_data *data, t_philo *philo);
-int	check_death(t_data	*data, int	*stop);
-
 // *********************************** CORE ***********************************
 
 // actions.c
-int			eating(t_philo *philo, t_data *data);
-int			sleeping(t_philo *philo, t_data *data);
-int			thinking(t_philo *philo, t_data *data);
+int		eating(t_philo *philo, t_data *data);
+int		sleeping(t_philo *philo, t_data *data);
+int		thinking(t_philo *philo, t_data *data);
 
 // routine.c
-void		*check_dead(void *arg);
 void		*routine(void *arg);
+int			should_stop(t_data *data, int *stop);
+int			life_loop(t_philo *philo, t_data *data, int *stop);
+void		*check_dead(void *arg);
 int			is_philo_dead(t_data *data, int *i);
-int			life_loop(t_philo *philo);
 void		one_philo(t_data *data);
 
 // time.c
@@ -113,7 +113,7 @@ void		init_philo(t_data *data);
 
 // create_threads.c
 int			init_mutex(t_data *data);
-int			destroy_until(t_data *data, int n);
+void		destroy_until(t_data *data, int n);
 int			destroy_all_mutex(t_data *data);
 
 // create_threads.c
