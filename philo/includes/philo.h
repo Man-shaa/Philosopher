@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 14:52:24 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 16:57:31 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,16 +87,20 @@ typedef struct s_data
 // *********************************** CORE ***********************************
 
 // actions.c
-int		eating(t_philo *philo, t_data *data);
-int		sleeping(t_philo *philo, t_data *data);
-int		thinking(t_philo *philo, t_data *data);
+int			eating(t_philo *philo, t_data *data);
+int			fork_and_eating(t_philo *philo, t_data *data);
+int			sleeping(t_philo *philo, t_data *data);
+int			thinking(t_philo *philo, t_data *data);
+
+// checker.c
+int			has_eaten(t_data *data, int i);
+void		*check_dead(void *arg);
+int			is_philo_dead(t_data *data, int *i);
 
 // routine.c
 void		*routine(void *arg);
-int			should_stop(t_data *data, int *stop);
-int			life_loop(t_philo *philo, t_data *data, int *stop);
-void		*check_dead(void *arg);
-int			is_philo_dead(t_data *data, int *i);
+int			should_stop(t_data *data);
+int			life_loop(t_philo *philo, t_data *data);
 void		one_philo(t_data *data);
 
 // time.c
@@ -119,10 +123,6 @@ int			destroy_all_mutex(t_data *data);
 // create_threads.c
 int			create_threads(t_data *data);
 int			join_threads(t_data *data);
-
-// *********************************** FREE ***********************************
-
-// free.c
 
 // ********************************** PARSING *********************************
 

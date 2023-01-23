@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:36:03 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/22 18:07:08 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/23 17:03:17 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,15 @@ void	ft_usleep(t_data *data, long int time_in_ms)
 	i = 0;
 	start_time = get_time_from_start(data->t_start);
 	while (get_time_from_start(data->t_start) < start_time + time_in_ms)
-		usleep(time_in_ms / 10);
+	{
+		pthread_mutex_lock(&data->stop);
+		if (data->philo_dead)
+		{
+			pthread_mutex_unlock(&data->stop);
+			return ;
+		}
+		pthread_mutex_unlock(&data->stop);
+		usleep(time_in_ms / 20);
+	}
 	// rajouter si philo_dead -> STOP
 }
