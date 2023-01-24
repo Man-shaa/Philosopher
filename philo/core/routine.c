@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 13:47:47 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 17:10:28 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/24 17:04:30 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,19 +65,19 @@ int	should_stop(t_data *data)
 int	life_loop(t_philo *philo, t_data *data)
 {
 	if (should_stop(data))
-		return (2);
+		return (1);
 	if (fork_and_eating(philo, philo->data_mem))
-		return (1);
-	if (should_stop(data))
 		return (2);
+	if (should_stop(data))
+		return (1);
 	if (sleeping(philo, philo->data_mem))
-		return (1);
+		return (3);
 	if (should_stop(data))
-		return (2);
+		return (1);
 	if (thinking(philo, philo->data_mem))
-		return (1);
+		return (4);
 	if (should_stop(data))
-		return (2);
+		return (1);
 	return (0);
 }
 
