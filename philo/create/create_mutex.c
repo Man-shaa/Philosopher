@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 17:23:45 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 17:24:09 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/24 22:01:08 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ int	init_mutex(t_data *data)
 		return (pthread_mutex_destroy(&data->writing), err_msg(MUTEX_INIT, 2));
 	if (pthread_mutex_init(&data->time, NULL))
 		return (pthread_mutex_destroy(&data->writing),
-			pthread_mutex_destroy(&data->stop), err_msg(MUTEX_INIT, 2));
+			pthread_mutex_destroy(&data->stop), err_msg(MUTEX_INIT, 3));
 	if (pthread_mutex_init(&data->meal, NULL))
 		return (pthread_mutex_destroy(&data->writing),
 			pthread_mutex_destroy(&data->stop),
-			pthread_mutex_destroy(&data->time), err_msg(MUTEX_INIT, 2));
+			pthread_mutex_destroy(&data->time), err_msg(MUTEX_INIT, 4));
 	return (init_fork_mutex(data));
 }
 
@@ -36,7 +36,7 @@ int	init_fork_mutex(t_data *data)
 	while (i < data->input.n_philo)
 	{
 		if (pthread_mutex_init(&data->fork[i], NULL))
-			return (destroy_until(data, i), err_msg(MUTEX_INIT, 3));
+			return (destroy_until(data, i), err_msg(MUTEX_INIT, 5));
 		usleep(100);
 		i++;
 	}
@@ -67,21 +67,4 @@ void	destroy_until(t_data *data, int n)
 		pthread_mutex_destroy(&data->fork[i]);
 		i++;
 	}
-}
-
-int	destroy_all_mutex(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	pthread_mutex_destroy(&data->writing);
-	pthread_mutex_destroy(&data->time);
-	pthread_mutex_destroy(&data->meal);
-	pthread_mutex_destroy(&data->stop);
-	while (i < data->input.n_philo)
-	{
-		pthread_mutex_destroy(&data->fork[i]);
-		i++;
-	}
-	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/23 17:24:20 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/24 22:01:15 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,6 @@ void		init_philo(t_data *data);
 int			init_mutex(t_data *data);
 int			init_fork_mutex(t_data *data);
 void		destroy_until(t_data *data, int n);
-int			destroy_all_mutex(t_data *data);
 
 // create_threads.c
 int			create_threads(t_data *data);
