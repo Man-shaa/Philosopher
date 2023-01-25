@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 21:39:16 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:37:11 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	create_threads(t_data *data)
 			i = 1;
 			ft_usleep(data, 2);
 		}
+		usleep(30);
 	}
 	return (join_threads(data));
 }
