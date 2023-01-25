@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 21:25:00 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:53:50 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stddef.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -24,8 +25,6 @@
 # include <semaphore.h>
 # include <pthread.h>
 # include <sys/time.h>
-
-# define ALL_SEM		6
 
 // actions
 # define EATING			" is eating\n"
@@ -81,14 +80,11 @@ typedef struct s_data
 	bool		philo_dead;
 	bool		t_exit;
 	long long	t_start;
-	sem_t		*time;
-	sem_t		*exit;
 	sem_t		*fork;
-	sem_t		*writing;
-	sem_t		*stop;
-	sem_t		*meal;
 	t_input		input;
 	t_philo		philo[200];
+	pid_t		pid[200];
+	pid_t		pid_check;
 }				t_data;
 
 // *********************************** CORE ***********************************
@@ -105,8 +101,7 @@ int			is_philo_dead(t_data *data, int *i);
 
 // routine.c
 int			check(t_data *data);
-void		*routine(void *arg);
-int			should_stop(t_data *data);
+void		routine(t_data *data, t_philo *philo);
 int			life_loop(t_data *data, t_philo *philo);
 void		one_philo(t_data *data);
 
@@ -117,21 +112,22 @@ void		ft_usleep(t_data *data, long int time_in_ms);
 
 // *********************************** CREATE *********************************
 
+// create_childs.c
+int			handle_t_creat_failed(t_data *data);
+int			wait_all_child(t_data *data);
+int			create_thread(t_data *data, t_philo *philo);
+int			create_childs(t_data *data);
+int			create_threads(t_data *data);
+int			join_threads(t_data *data);
+
 // create_data.c
 int			create_data(t_data *data, int ac, char **av);
 void		init_input(t_input *input, int ac, char **av);
 void		init_philo(t_data *data);
 
 // create_semaphores.c
-void		init_sem_to_null(t_data *data);
-void		init_sem_to_null_2(t_data *data);
 int			init_semaphores(t_data *data);
-void		destroy_semaphore_until(t_data *data, int until);
-void		destroy_semaphore_until2(t_data *data, int until);
-
-// create_threads.c
-int			create_threads(t_data *data);
-int			join_threads(t_data *data);
+void		destroy_semaphore(t_data *data);
 
 // ********************************** PARSING *********************************
 

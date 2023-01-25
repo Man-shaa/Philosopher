@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 20:46:35 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:54:43 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,72 +14,71 @@
 
 int	check(t_data *data)
 {
-	sem_wait(data->stop);
 	if (data->philo_dead == true)
-	{
-		sem_post(data->stop);
 		return (1);
-	}
-	sem_post(data->stop);
-	sem_wait(data->exit);
-	if (data->t_exit == true)
-	{
-		sem_post(data->exit);
-		return (1);
-	}
-	sem_post(data->exit);
 	return (0);
 }
 
-void	*routine(void *arg)
+void	routine(t_data *data, t_philo *philo)
 {
-	t_philo	*philo;
-	t_data	*data;
-
-	philo = (t_philo *)arg;
-	data = (t_data *)philo->data_mem;
 	if (data->input.n_meal)
 	{
-		while (!check(data) && philo->meal_count < data->input.n_meal)
+		while (data->philo_dead == false && philo->meal_count < data->input.n_meal)
+		{
 			if (life_loop(data, philo))
-				return (NULL);
+			{
+				// destroy_semaphore(data);
+				exit (1);
+			}
+
+		}
 	}
 	else
 	{
-		while (!check(data))
+		while (data->philo_dead == false)
+		{
 			if (life_loop(data, philo))
-				return (NULL);
+			{
+				// destroy_semaphore(data);
+				exit (1);
+			}
+		}
 	}
-	return (NULL);
+	// destroy_semaphore(data);
+	exit (0);
 }
 
-int	should_stop(t_data *data)
+
+int	should_die(t_data *data, t_philo *philo)
 {
-	sem_wait(data->stop);
-	if (data->philo_dead == true)
+	long long	time;
+
+	(void)data;
+	time = get_time_from_start(philo->t_until_die);
+	if (time > data->input.to_die)
 	{
-		sem_post(data->stop);
+		data->philo_dead = true;
+		printf("%lld	%d is dead\n", get_time_from_start(data->t_start), philo->pos + 1);
 		return (1);
 	}
-	sem_post(data->stop);
 	return (0);
 }
 
 int	life_loop(t_data *data, t_philo *philo)
 {
-	if (should_stop(data))
+	if (should_die(data, philo))
 		return (1);
 	if (eating(data, philo))
 		return (2);
-	if (should_stop(data))
+	if (should_die(data, philo))
 		return (1);
 	if (sleeping(data, philo))
 		return (3);
-	if (should_stop(data))
+	if (should_die(data, philo))
 		return (1);
 	if (thinking(data, philo))
 		return (4);
-	if (should_stop(data))
+	if (should_die(data, philo))
 		return (1);
 	return (0);
 }

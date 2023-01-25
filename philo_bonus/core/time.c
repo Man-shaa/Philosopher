@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:36:03 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 16:01:26 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:25:19 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,8 @@ void	ft_usleep(t_data *data, long int time_in_ms)
 	start_time = get_time_from_start(data->t_start);
 	while (get_time_from_start(data->t_start) < start_time + time_in_ms)
 	{
-		sem_wait(data->stop);
-		if (data->philo_dead)
-		{
-			sem_post(data->stop);
+		if (data->philo_dead == true)
 			return ;
-		}
-		sem_post(data->stop);
 		usleep(time_in_ms / 20);
 	}
 }

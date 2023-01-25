@@ -12,12 +12,11 @@ UTILS_DIR	=	utils/
 
 SRCS		=	main.c \
 				${CORE_DIR}action.c \
-				${CORE_DIR}checker.c \
 				${CORE_DIR}routine.c \
 				${CORE_DIR}time.c \
 				${CREATE_DIR}create_data.c \
 				${CREATE_DIR}create_semaphores.c \
-				${CREATE_DIR}create_threads.c \
+				${CREATE_DIR}create_childs.c \
 				${PARSING_DIR}parsing.c \
 				${PRINT_DIR}print.c \
 				${UTILS_DIR}utils.c
