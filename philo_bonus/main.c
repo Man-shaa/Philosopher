@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:52:59 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 13:00:57 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 17:40:14 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 // utiliser un sem_t par philo pour time et meal et pas un general a tous qui
 // va les ralentir (peut etre negligeable ?)
-
-// Utile de sem_post dans eating() si un philo est mort et que print_action()
-// return 1 ? Ou inutile vis a vis de helgrind + performance + resultat?
 
 // cree un sem_t pour le cas ou les threads ne se cree pas tous et qu'il faut
 // sortir sans message "X is dead" et ecrire le message seulement si cette valeur
@@ -39,6 +36,6 @@ int	main(int ac, char **av)
 		return (one_philo(&data), 0);
 	return (create_childs(&data));
 		return (4);
-	destroy_semaphore_until(&data, ALL_SEM);
+	destroy_semaphore(&data);
 	return (0);
 }
