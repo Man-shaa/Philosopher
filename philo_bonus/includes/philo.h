@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 14:16:19 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:20:42 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ typedef struct s_data
 	sem_t		*exit;
 	sem_t		*fork;
 	sem_t		*writing;
-	sem_t		*stop;
 	sem_t		*meal;
 	t_input		input;
 	t_philo		philo[200];
@@ -109,7 +108,6 @@ int			is_philo_dead(t_data *data, int *i);
 // routine.c
 int			check(t_data *data);
 void		*routine(void *arg);
-int			should_stop(t_data *data);
 int			life_loop(t_data *data, t_philo *philo);
 void		one_philo(t_data *data);
 

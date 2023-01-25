@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:01:54 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 12:56:45 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:20:38 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,6 @@ void	unlink_sem(t_data *data)
 	{
 		sem_close(data->writing);
 		sem_unlink("write_sem");
-	}
-	data->stop = sem_open("stop_sem", 1);
-	if (data->stop != SEM_FAILED)
-	{
-		sem_close(data->stop);
-		sem_unlink("stop_sem");
 	}
 	unlink_sem_2(data);
 }
@@ -69,18 +63,15 @@ int	init_semaphores(t_data *data)
 	data->writing = sem_open("write_sem", O_CREAT, 0644, 1);
 	if (data->writing == SEM_FAILED)
 		return (destroy_semaphore_until(data, 1), err_msg(SEM_OPEN, 2));
-	data->stop = sem_open("stop_sem", O_CREAT, 0644, 1);
-	if (data->stop == SEM_FAILED)
-		return (destroy_semaphore_until(data, 2), err_msg(SEM_OPEN, 3));
 	data->meal = sem_open("meal_sem", O_CREAT, 0644, 1);
 	if (data->meal == SEM_FAILED)
-		return (destroy_semaphore_until(data, 3), err_msg(SEM_OPEN, 4));
+		return (destroy_semaphore_until(data, 2), err_msg(SEM_OPEN, 4));
 	data->time = sem_open("time_sem", O_CREAT, 0644, 1);
 	if (data->time == SEM_FAILED)
-		return (destroy_semaphore_until(data, 4), err_msg(SEM_OPEN, 4));
+		return (destroy_semaphore_until(data, 3), err_msg(SEM_OPEN, 4));
 	data->exit = sem_open("exit_sem", O_CREAT, 0644, 1);
 	if (data->exit == SEM_FAILED)
-		return (destroy_semaphore_until(data, 5), err_msg(SEM_OPEN, 4));
+		return (destroy_semaphore_until(data, 4), err_msg(SEM_OPEN, 4));
 	return (0);
 }
 
@@ -97,28 +88,23 @@ void	destroy_semaphore_until(t_data *data, int until)
 		sem_close(data->writing);
 		sem_unlink("write_sem");
 	}
-	if (until >= 3 && data->stop != SEM_FAILED)
-	{
-		sem_close(data->stop);
-		sem_unlink("stop_sem");
-	}
-	if (until > 3)
+	if (until > 2)
 		destroy_semaphore_until2(data, until);
 }
 
 void	destroy_semaphore_until2(t_data *data, int until)
 {
-	if (until >= 4 && data->meal != SEM_FAILED)
+	if (until >= 3 && data->meal != SEM_FAILED)
 	{
 		sem_close(data->meal);
 		sem_unlink("meal_sem");
 	}
-	if (until >= 5 && data->time != SEM_FAILED)
+	if (until >= 4 && data->time != SEM_FAILED)
 	{
 		sem_close(data->time);
 		sem_unlink("time_sem");
 	}
-	if (until >= 6 && data->exit != SEM_FAILED)
+	if (until >= 5 && data->exit != SEM_FAILED)
 	{
 		sem_close(data->exit);
 		sem_unlink("exit_sem");

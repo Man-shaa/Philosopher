@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 14:24:50 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:21:50 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ int	handle_t_creat_failed(t_data *data)
 	sem_wait(data->writing);
 	printf("%s\n", THREADS_CREATE);
 	sem_post(data->writing);
-	sem_wait(data->stop);
-	data->philo_dead = true;
-	sem_post(data->stop);
 	return (1);
 }
 
@@ -33,7 +30,6 @@ int	wait_all_child(t_data *data)
 
 	i = 0;
 	status = 0;
-	waitpid(data->pid_check, &status, 0);
 	while (i < data->input.n_philo)
 	{
 		waitpid(data->pid[i], &status, 0);
@@ -55,17 +51,24 @@ int	kill_all_process(t_data *data)
 	return (0);
 }
 
-int	create_thread(t_data *data, t_philo *philo)
+int	each_philo(t_data *data, t_philo *philo)
 {
-	routine((void *)philo);
-	// kill_all_process(data);
-		// coment gerer ce retour d'erreur pour tous les childs ?
+	if (data->input.n_meal)
+	{
+		while (!check(data) && philo->meal_count < data->input.n_meal)
+			if (life_loop(data, philo))
+				exit (0);
+	}
+	else
+	{
+		while (!check(data))
+			if (life_loop(data, philo))
+				exit (0);
+	}
+	kill_all_process(data);
 	// destroy_semaphore_until(data, ALL_SEM);
-	(void)data;
 	// pthread_detach(philo->thread);
-		// return (2);
-		// coment gerer ce retour d'erreur pour tous les childs ?
-	return (0);
+	exit (0);
 }
 
 int	create_checker(t_data *data)
@@ -86,8 +89,6 @@ int	create_childs(t_data *data)
 	int	i;
 
 	i = 0;
-	if (create_checker(data))
-		return (1);
 	data->t_start = get_time();
 	while (i < data->input.n_philo)
 	{
@@ -97,7 +98,7 @@ int	create_childs(t_data *data)
 		// erreur
 		if (data->pid[i] == 0)
 		{
-			if (create_thread(data, &data->philo[i]))
+			if (each_philo(data, &data->philo[i]))
 				return (3);
 				// erreur
 		}
@@ -107,7 +108,6 @@ int	create_childs(t_data *data)
 			ft_usleep(data, 10);
 			i = 1;
 		}
-		// ft_usleep(data, 10);
 	}
 	return (wait_all_child(data), 0);
 }

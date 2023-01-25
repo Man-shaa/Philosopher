@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 13:02:03 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 16:19:37 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,33 +57,21 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-int	should_stop(t_data *data)
-{
-	sem_wait(data->stop);
-	if (data->philo_dead == true)
-	{
-		sem_post(data->stop);
-		return (1);
-	}
-	sem_post(data->stop);
-	return (0);
-}
-
 int	life_loop(t_data *data, t_philo *philo)
 {
-	if (should_stop(data))
+	if (data->philo_dead == true)
 		return (1);
 	if (eating(data, philo))
 		return (2);
-	if (should_stop(data))
+	if (data->philo_dead == true)
 		return (1);
 	if (sleeping(data, philo))
 		return (3);
-	if (should_stop(data))
+	if (data->philo_dead == true)
 		return (1);
 	if (thinking(data, philo))
 		return (4);
-	if (should_stop(data))
+	if (data->philo_dead == true)
 		return (1);
 	return (0);
 }
