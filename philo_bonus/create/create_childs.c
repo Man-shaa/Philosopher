@@ -6,21 +6,23 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 17:55:32 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 21:49:18 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	kill_all_process(t_data *data)
+int	kill_process_until(t_data *data, int until)
 {
 	int	i;
 
 	i = 0;
-	while (i < data->input.n_philo)
+	while (i < until)
 	{
 		kill(data->pid[i], SIGKILL);
-		i++;
+		i += 2;
+		if (i > until && i % 2 == 0)
+			i = 1;
 	}
 	return (0);
 }
@@ -38,10 +40,11 @@ int	wait_all_child(t_data *data)
 		if (WEXITSTATUS(status) == 1)
 		{
 			printf("recu instruction kill\n\n");
-			kill_all_process(data);
+			return (kill_process_until(data, data->input.n_philo));
 		}
 		i++;
 	}
+	destroy_semaphore(data);
 	return (WEXITSTATUS(status));
 }
 
@@ -55,14 +58,13 @@ int	create_childs(t_data *data)
 	{
 		data->pid[i] = fork();
 		if (data->pid[i] == -1)
-			return (1);
-		// erreur + stop tous les precedents
+			return (err_msg(FORK, 1), kill_process_until(data, i), 1);
 		if (data->pid[i] == 0)
 			routine(data, &data->philo[i]);
 		i += 2;
 		if (i >= data->input.n_philo && i % 2 == 0)
 			i = 1;
-		ft_usleep(data, 3); //utile ?
+		ft_usleep(data, 3);
 	}
 	return (wait_all_child(data), 0);
 }
