@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:01:54 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 20:49:05 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 12:56:45 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // Si un semaphore est toujours open de la precedente exectuion du programme,
 // tente de l'ouvrir sans le cree, si ca fonctione le supprime
-void	init_sem_to_null(t_data *data)
+void	unlink_sem(t_data *data)
 {
 	data->fork = sem_open("fork_sem", data->input.n_philo);
 	if (data->fork != SEM_FAILED)
@@ -34,10 +34,10 @@ void	init_sem_to_null(t_data *data)
 		sem_close(data->stop);
 		sem_unlink("stop_sem");
 	}
-	init_sem_to_null_2(data);
+	unlink_sem_2(data);
 }
 
-void	init_sem_to_null_2(t_data *data)
+void	unlink_sem_2(t_data *data)
 {
 	data->meal = sem_open("meal_sem", 1);
 	if (data->meal != SEM_FAILED)
@@ -62,7 +62,7 @@ void	init_sem_to_null_2(t_data *data)
 // cree tous les semaphores necessaires au programme
 int	init_semaphores(t_data *data)
 {
-	init_sem_to_null(data);
+	unlink_sem(data);
 	data->fork = sem_open("fork_sem", O_CREAT, 0644, data->input.n_philo);
 	if (data->fork == SEM_FAILED)
 		return (err_msg(SEM_OPEN, 1));
@@ -118,7 +118,7 @@ void	destroy_semaphore_until2(t_data *data, int until)
 		sem_close(data->time);
 		sem_unlink("time_sem");
 	}
-	if (until >= 6 && data->time != SEM_FAILED)
+	if (until >= 6 && data->exit != SEM_FAILED)
 	{
 		sem_close(data->exit);
 		sem_unlink("exit_sem");

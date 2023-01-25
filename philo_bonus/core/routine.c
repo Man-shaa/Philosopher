@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 20:46:35 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 13:02:03 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,17 @@ void	*routine(void *arg)
 	{
 		while (!check(data) && philo->meal_count < data->input.n_meal)
 			if (life_loop(data, philo))
+			{
 				return (NULL);
+			}
 	}
 	else
 	{
 		while (!check(data))
 			if (life_loop(data, philo))
+			{
 				return (NULL);
+			}
 	}
 	return (NULL);
 }

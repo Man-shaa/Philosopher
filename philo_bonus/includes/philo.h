@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 21:25:00 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:16:19 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <stddef.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <stdbool.h>
 # include <sys/stat.h>
 # include <fcntl.h>
@@ -89,6 +90,8 @@ typedef struct s_data
 	sem_t		*meal;
 	t_input		input;
 	t_philo		philo[200];
+	pid_t		pid[200];
+	pid_t		pid_check;
 }				t_data;
 
 // *********************************** CORE ***********************************
@@ -123,13 +126,17 @@ void		init_input(t_input *input, int ac, char **av);
 void		init_philo(t_data *data);
 
 // create_semaphores.c
-void		init_sem_to_null(t_data *data);
-void		init_sem_to_null_2(t_data *data);
+void		unlink_sem(t_data *data);
+void		unlink_sem_2(t_data *data);
 int			init_semaphores(t_data *data);
 void		destroy_semaphore_until(t_data *data, int until);
 void		destroy_semaphore_until2(t_data *data, int until);
 
 // create_threads.c
+int			handle_t_creat_failed(t_data *data);
+int			wait_all_child(t_data *data);
+int			create_thread(t_data *data, t_philo *philo);
+int			create_childs(t_data *data);
 int			create_threads(t_data *data);
 int			join_threads(t_data *data);
 

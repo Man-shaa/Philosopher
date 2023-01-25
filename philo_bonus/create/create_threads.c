@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 21:15:53 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/25 14:24:50 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,92 @@ int	handle_t_creat_failed(t_data *data)
 	data->philo_dead = true;
 	sem_post(data->stop);
 	return (1);
+}
+
+int	wait_all_child(t_data *data)
+{
+	int	i;
+	int	status;
+
+	i = 0;
+	status = 0;
+	waitpid(data->pid_check, &status, 0);
+	while (i < data->input.n_philo)
+	{
+		waitpid(data->pid[i], &status, 0);
+		i++;
+	}
+	return (WEXITSTATUS(status));
+}
+
+int	kill_all_process(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	while (i < data->input.n_philo)
+	{
+		kill(data->pid[i], SIGKILL);
+		i++;
+	}
+	return (0);
+}
+
+int	create_thread(t_data *data, t_philo *philo)
+{
+	routine((void *)philo);
+	// kill_all_process(data);
+		// coment gerer ce retour d'erreur pour tous les childs ?
+	// destroy_semaphore_until(data, ALL_SEM);
+	(void)data;
+	// pthread_detach(philo->thread);
+		// return (2);
+		// coment gerer ce retour d'erreur pour tous les childs ?
+	return (0);
+}
+
+int	create_checker(t_data *data)
+{
+	data->pid_check = fork();
+	if (data->pid_check == -1)
+		return (1);
+		// erreur
+	if (data->pid_check == 0)
+	{
+		check(data);
+	}
+	return (0);
+}
+
+int	create_childs(t_data *data)
+{
+	int	i;
+
+	i = 0;
+	if (create_checker(data))
+		return (1);
+	data->t_start = get_time();
+	while (i < data->input.n_philo)
+	{
+		data->pid[i] = fork();
+		if (data->pid[i] == -1)
+			return (2);
+		// erreur
+		if (data->pid[i] == 0)
+		{
+			if (create_thread(data, &data->philo[i]))
+				return (3);
+				// erreur
+		}
+		i += 2;
+		if (i >= data->input.n_philo && i % 2 == 0)
+		{
+			ft_usleep(data, 10);
+			i = 1;
+		}
+		// ft_usleep(data, 10);
+	}
+	return (wait_all_child(data), 0);
 }
 
 int	create_threads(t_data *data)
