@@ -12,6 +12,7 @@ UTILS_DIR	=	utils/
 
 SRCS		=	main.c \
 				${CORE_DIR}action.c \
+				${CORE_DIR}checker.c \
 				${CORE_DIR}routine.c \
 				${CORE_DIR}time.c \
 				${CREATE_DIR}create_data.c \

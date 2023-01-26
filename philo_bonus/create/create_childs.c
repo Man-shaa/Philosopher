@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 15:24:58 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:26:57 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	kill_process_until(t_data *data, int until)
 	i = 0;
 	while (i < until)
 	{
+		usleep(100);
 		kill(data->pid[i], SIGKILL);
 		i += 2;
 		if (i >= until && i % 2 == 0)
@@ -26,49 +27,6 @@ int	kill_process_until(t_data *data, int until)
 	}
 	return (0);
 }
-
-// int	wait_all_child(t_data *data, int n)
-// {
-// 	int	status;
-// 	int	i;
-
-// 	i = 0;
-// 	if (n == 0)
-// 	{
-// 		while (data->pid[i] != waitpid(data->pid[i], &status, WNOHANG))
-// 		{
-// 			if (i == data->input.n_philo - 1)
-// 				i = -1;
-// 			i++;
-// 			usleep(200);
-// 		}
-// 		// if (WEXITSTATUS(status) == 0)
-// 		// 	wait_all_child(data, 0);
-// 		// else
-// 		// {
-// 		if (WEXITSTATUS(status) == 1)
-// 		{
-// 			printf("%d has exited\n", i + 1);
-// 			destroy_semaphore(data);
-// 			kill_process_until(data, data->input.n_philo);
-// 			return (1);
-// 		}
-// 		else
-// 		{
-// 			destroy_semaphore(data);
-// 			kill_process_until(data, data->input.n_philo);
-// 			return (0);
-// 		}
-// 		// }
-// 	}
-// 	else
-// 	{
-// 			destroy_semaphore(data);
-// 			kill_process_until(data, data->input.n_philo);
-// 			return (0);
-// 	}
-// 	return (0);
-// }
 
 int	wait_all_child(t_data *data)
 {
@@ -82,10 +40,12 @@ int	wait_all_child(t_data *data)
 		if (WEXITSTATUS(status) == 1)
 		{
 			kill_process_until(data, data->input.n_philo);
-			return (1);
+			// destroy_semaphore(data);
+			// retur
 		}
 		i++;
 	}
+	destroy_semaphore(data);
 	return (0);
 }
 

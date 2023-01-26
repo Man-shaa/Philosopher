@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 20:16:42 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/24 20:46:32 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 16:56:02 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	create_data(t_data *data, int ac, char **av)
 {
 	data->philo_dead = false;
 	data->t_start = 0;
-	data->t_exit = false;
 	init_input(&data->input, ac, av);
 	init_philo(data);
 	return (0);

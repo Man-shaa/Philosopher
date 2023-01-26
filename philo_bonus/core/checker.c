@@ -1,34 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/21 18:32:45 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 17:11:25 by msharifi         ###   ########.fr       */
+/*   Created: 2023/01/26 16:58:32 by msharifi          #+#    #+#             */
+/*   Updated: 2023/01/26 17:08:58 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo.h"
 
-int	err_msg(char *s1, int ret_val)
+void	*checker(void *arg)
 {
-	if (s1)
-	{
-		write(STDERR_FILENO, s1, ft_strlen(s1));
-		write(STDERR_FILENO, "\n", 1);
-	}
-	return (ret_val);
-}
+	t_philo	*philo;
+	t_data	*data;
 
-int	print_action(t_philo *philo, t_data *data, char *action)
-{
-	if (data->philo_dead == true)
-		return (1);
-	sem_wait(data->stop);
-	printf("%lld	%d%s", get_time_from_start(data->t_start),
-		philo->pos + 1, action);
-	sem_post(data->stop);
-	return (0);
+	philo = (t_philo *)arg;
+	data = (t_data *)philo->data_mem;
+	sem_wait(data->dead);
+	data->philo_dead = true;
+	sem_post(data->dead);
+	return (NULL);
 }

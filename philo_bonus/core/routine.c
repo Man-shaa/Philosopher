@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 14:56:46 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:27:09 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	should_die(t_data *data, t_philo *philo)
 	{
 		data->philo_dead = true;
 		sem_wait(data->stop);
+		sem_post(data->dead);
 		printf("%lld	%d is dead\n", get_time_from_start(data->t_start), philo->pos + 1);
 		return (1);
 	}

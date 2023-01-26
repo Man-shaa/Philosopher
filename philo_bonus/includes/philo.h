@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 15:24:42 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 17:04:25 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,16 +74,15 @@ typedef struct s_input
 
 typedef struct s_data
 {
-	pthread_t	checker;
+	t_input		input;
+	t_philo		philo[200];
+	pthread_t	monitor;
+	sem_t		*dead;
 	bool		philo_dead;
-	bool		t_exit;
 	long long	t_start;
 	sem_t		*fork;
 	sem_t		*stop;
-	t_input		input;
-	t_philo		philo[200];
 	pid_t		pid[200];
-	pid_t		pid_check;
 }				t_data;
 
 // *********************************** CORE ***********************************
@@ -94,9 +93,7 @@ int			sleeping(t_data *data, t_philo *philo);
 int			thinking(t_data *data, t_philo *philo);
 
 // checker.c
-int			has_eaten(t_data *data, t_philo *philo);
-void		*check_dead(void *arg);
-int			is_philo_dead(t_data *data, int *i);
+void		*checker(void *arg);
 
 // routine.c
 int			check(t_data *data);
@@ -113,7 +110,6 @@ void		ft_usleep(t_data *data, long int time_in_ms);
 
 // create_childs.c
 int			kill_process_until(t_data *data, int until);
-// int			wait_all_child(t_data *data, int i);
 int			wait_all_child(t_data *data);
 int			create_childs(t_data *data);
 
