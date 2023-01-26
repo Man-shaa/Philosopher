@@ -6,14 +6,11 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:52:59 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 17:40:14 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:05:16 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "includes/philo.h"
-
-// utiliser un sem_t par philo pour time et meal et pas un general a tous qui
-// va les ralentir (peut etre negligeable ?)
 
 // cree un sem_t pour le cas ou les threads ne se cree pas tous et qu'il faut
 // sortir sans message "X is dead" et ecrire le message seulement si cette valeur

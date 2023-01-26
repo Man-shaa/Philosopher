@@ -6,18 +6,11 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 17:54:43 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:56:46 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../includes/philo.h"
-
-int	check(t_data *data)
-{
-	if (data->philo_dead == true)
-		return (1);
-	return (0);
-}
 
 void	routine(t_data *data, t_philo *philo)
 {
@@ -27,10 +20,9 @@ void	routine(t_data *data, t_philo *philo)
 		{
 			if (life_loop(data, philo))
 			{
-				// destroy_semaphore(data);
+				destroy_semaphore(data);
 				exit (1);
 			}
-
 		}
 	}
 	else
@@ -39,25 +31,28 @@ void	routine(t_data *data, t_philo *philo)
 		{
 			if (life_loop(data, philo))
 			{
-				// destroy_semaphore(data);
+				destroy_semaphore(data);
 				exit (1);
 			}
 		}
 	}
-	// destroy_semaphore(data);
+	destroy_semaphore(data);
 	exit (0);
 }
 
-
+// Verifie si philo est mort, si oui set data->philo_dead a true
+// Return 1 si le philo est mort, sinon 0;
 int	should_die(t_data *data, t_philo *philo)
 {
 	long long	time;
 
-	(void)data;
 	time = get_time_from_start(philo->t_until_die);
+	if (data->philo_dead == true)
+		return (1);
 	if (time > data->input.to_die)
 	{
 		data->philo_dead = true;
+		sem_wait(data->stop);
 		printf("%lld	%d is dead\n", get_time_from_start(data->t_start), philo->pos + 1);
 		return (1);
 	}

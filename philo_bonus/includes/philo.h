@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 17:53:50 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:24:42 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,8 @@ time_to_eat time_to_sleep [number_of_times_each_philosopher_must_eat]"
 positive integer between 1 and 200"
 # define INT			"All parameters must be a positive integer"
 # define NUMBER			"All parameters must be numbers"
-# define THREADS_CREATE	"Error while creating threads"
-# define THREADS_JOIN	"Error while joining threads"
 # define PHILO			"Error while creating t_philo structure (malloc)"
-# define FORK			"Error while creating fork mutex"
+# define FORK			"Error while creating child process"
 
 // colors
 # define DEFAULT		"\033[0m"
@@ -81,6 +79,7 @@ typedef struct s_data
 	bool		t_exit;
 	long long	t_start;
 	sem_t		*fork;
+	sem_t		*stop;
 	t_input		input;
 	t_philo		philo[200];
 	pid_t		pid[200];
@@ -113,12 +112,10 @@ void		ft_usleep(t_data *data, long int time_in_ms);
 // *********************************** CREATE *********************************
 
 // create_childs.c
-int			handle_t_creat_failed(t_data *data);
+int			kill_process_until(t_data *data, int until);
+// int			wait_all_child(t_data *data, int i);
 int			wait_all_child(t_data *data);
-int			create_thread(t_data *data, t_philo *philo);
 int			create_childs(t_data *data);
-int			create_threads(t_data *data);
-int			join_threads(t_data *data);
 
 // create_data.c
 int			create_data(t_data *data, int ac, char **av);
