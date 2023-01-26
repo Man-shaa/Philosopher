@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 21:49:18 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:24:58 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,54 @@ int	kill_process_until(t_data *data, int until)
 	{
 		kill(data->pid[i], SIGKILL);
 		i += 2;
-		if (i > until && i % 2 == 0)
+		if (i >= until && i % 2 == 0)
 			i = 1;
 	}
 	return (0);
 }
+
+// int	wait_all_child(t_data *data, int n)
+// {
+// 	int	status;
+// 	int	i;
+
+// 	i = 0;
+// 	if (n == 0)
+// 	{
+// 		while (data->pid[i] != waitpid(data->pid[i], &status, WNOHANG))
+// 		{
+// 			if (i == data->input.n_philo - 1)
+// 				i = -1;
+// 			i++;
+// 			usleep(200);
+// 		}
+// 		// if (WEXITSTATUS(status) == 0)
+// 		// 	wait_all_child(data, 0);
+// 		// else
+// 		// {
+// 		if (WEXITSTATUS(status) == 1)
+// 		{
+// 			printf("%d has exited\n", i + 1);
+// 			destroy_semaphore(data);
+// 			kill_process_until(data, data->input.n_philo);
+// 			return (1);
+// 		}
+// 		else
+// 		{
+// 			destroy_semaphore(data);
+// 			kill_process_until(data, data->input.n_philo);
+// 			return (0);
+// 		}
+// 		// }
+// 	}
+// 	else
+// 	{
+// 			destroy_semaphore(data);
+// 			kill_process_until(data, data->input.n_philo);
+// 			return (0);
+// 	}
+// 	return (0);
+// }
 
 int	wait_all_child(t_data *data)
 {
@@ -33,19 +76,17 @@ int	wait_all_child(t_data *data)
 	int	status;
 
 	i = 0;
-	status = 0;
 	while (i < data->input.n_philo)
 	{
 		waitpid(data->pid[i], &status, 0);
 		if (WEXITSTATUS(status) == 1)
 		{
-			printf("recu instruction kill\n\n");
-			return (kill_process_until(data, data->input.n_philo));
+			kill_process_until(data, data->input.n_philo);
+			return (1);
 		}
 		i++;
 	}
-	destroy_semaphore(data);
-	return (WEXITSTATUS(status));
+	return (0);
 }
 
 int	create_childs(t_data *data)
@@ -63,8 +104,10 @@ int	create_childs(t_data *data)
 			routine(data, &data->philo[i]);
 		i += 2;
 		if (i >= data->input.n_philo && i % 2 == 0)
+		{
 			i = 1;
-		ft_usleep(data, 3);
+			ft_usleep(data, data->input.to_eat);
+		}
 	}
 	return (wait_all_child(data), 0);
 }

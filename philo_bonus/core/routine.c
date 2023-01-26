@@ -6,22 +6,14 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 21:52:00 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 14:56:46 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../includes/philo.h"
 
-int	check(t_data *data)
-{
-	if (data->philo_dead == true)
-		return (1);
-	return (0);
-}
-
 void	routine(t_data *data, t_philo *philo)
 {
-	ft_usleep(data, 200);
 	if (data->input.n_meal)
 	{
 		while (data->philo_dead == false && philo->meal_count < data->input.n_meal)
@@ -31,42 +23,33 @@ void	routine(t_data *data, t_philo *philo)
 				destroy_semaphore(data);
 				exit (1);
 			}
-
 		}
 	}
-	while (data->philo_dead == false)
+	else
 	{
-		if (life_loop(data, philo))
+		while (data->philo_dead == false)
 		{
-			destroy_semaphore(data);
-			exit (1);
+			if (life_loop(data, philo))
+			{
+				destroy_semaphore(data);
+				exit (1);
+			}
 		}
 	}
 	destroy_semaphore(data);
 	exit (0);
 }
 
-int	someone_is_dead(t_data *data)
-{
-	int	i;
-
-	i = 0;
-	while (i < data->input.n_philo)
-	{
-		if (kill(data->pid[i], SIGUSR1) == -1)
-			return (printf("reception mort !!!!!\n\n"), 1);
-		i++;
-	}
-	return (0);
-}
-
+// Verifie si philo est mort, si oui set data->philo_dead a true
+// Return 1 si le philo est mort, sinon 0;
 int	should_die(t_data *data, t_philo *philo)
 {
 	long long	time;
 
 	time = get_time_from_start(philo->t_until_die);
-	(void)time;
-	if (someone_is_dead(data))
+	if (data->philo_dead == true)
+		return (1);
+	if (time > data->input.to_die)
 	{
 		data->philo_dead = true;
 		sem_wait(data->stop);

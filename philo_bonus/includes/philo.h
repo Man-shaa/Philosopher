@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 20:23:52 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:24:42 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ void		ft_usleep(t_data *data, long int time_in_ms);
 
 // create_childs.c
 int			kill_process_until(t_data *data, int until);
+// int			wait_all_child(t_data *data, int i);
 int			wait_all_child(t_data *data);
 int			create_childs(t_data *data);
 
