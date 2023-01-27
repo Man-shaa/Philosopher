@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 22:22:49 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 23:46:36 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,14 @@
 void	*routine(void *arg)
 {
 	t_philo	*philo;
-	t_data *data;
+	t_data	*data;
 
 	philo = (t_philo *)arg;
 	data = (t_data *)philo->data_mem;
 	if (data->input.n_meal)
 	{
-		while (!should_die(data, philo) && philo->meal_count < data->input.n_meal)
+		while (!should_die(data, philo) && philo->meal_count
+			< data->input.n_meal)
 			if (life_loop(data, philo))
 				return (NULL);
 	}
@@ -38,7 +39,8 @@ int	child(t_data *data, t_philo *philo)
 {
 	if (data->input.n_meal)
 	{
-		while (!should_die(data, philo) && philo->meal_count < data->input.n_meal)
+		while (!should_die(data, philo) && philo->meal_count
+			< data->input.n_meal)
 			if (life_loop(data, philo))
 				exit (0);
 	}
@@ -65,7 +67,8 @@ int	should_die(t_data *data, t_philo *philo)
 	{
 		data->philo_dead = true;
 		sem_wait(data->writing);
-		printf("%lld	%d is dead\n", get_time_from_start(data->t_start), philo->pos + 1);
+		printf("%lld	%d is dead\n",
+			get_time_from_start(data->t_start), philo->pos + 1);
 		return (1);
 	}
 	return (0);
