@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:36:03 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 21:24:45 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:34:33 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,23 @@ void	ft_usleep(t_data *data, long int time_in_ms)
 	while (get_time_from_start(data->t_start) < start_time + time_in_ms)
 	{
 		if (data->philo_dead == true)
+			return ;
+		usleep(time_in_ms / 20);
+	}
+}
+
+// fonction usleep avec plus de precision, attend time_in_ms milliseconds
+// Et check si le philo est mort pdt son temps de usleep
+void	ft_usleep_routine(t_data *data, t_philo *philo, long int time_in_ms)
+{
+	long int	start_time;
+	int			i;
+
+	i = 0;
+	start_time = get_time_from_start(data->t_start);
+	while (get_time_from_start(data->t_start) < start_time + time_in_ms)
+	{
+		if (should_die(data, philo))
 			return ;
 		usleep(time_in_ms / 20);
 	}

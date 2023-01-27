@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 17:04:25 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:21:35 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_data
 	bool		philo_dead;
 	long long	t_start;
 	sem_t		*fork;
-	sem_t		*stop;
+	sem_t		*writing;
 	pid_t		pid[200];
 }				t_data;
 
@@ -98,6 +98,7 @@ void		*checker(void *arg);
 // routine.c
 int			check(t_data *data);
 void		routine(t_data *data, t_philo *philo);
+int			should_die(t_data *data, t_philo *philo);
 int			life_loop(t_data *data, t_philo *philo);
 void		one_philo(t_data *data);
 
@@ -105,6 +106,7 @@ void		one_philo(t_data *data);
 long long	get_time(void);
 long long	get_time_from_start(long long time);
 void		ft_usleep(t_data *data, long int time_in_ms);
+void		ft_usleep_routine(t_data *data, t_philo *philo, long int time);
 
 // *********************************** CREATE *********************************
 

@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 17:27:09 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:28:18 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	routine(t_data *data, t_philo *philo)
 {
 	if (data->input.n_meal)
 	{
-		while (data->philo_dead == false && philo->meal_count < data->input.n_meal)
+		while (!should_die(data, philo) && philo->meal_count < data->input.n_meal)
 		{
 			if (life_loop(data, philo))
 			{
@@ -27,7 +27,7 @@ void	routine(t_data *data, t_philo *philo)
 	}
 	else
 	{
-		while (data->philo_dead == false)
+		while (!should_die(data, philo))
 		{
 			if (life_loop(data, philo))
 			{
@@ -52,8 +52,7 @@ int	should_die(t_data *data, t_philo *philo)
 	if (time > data->input.to_die)
 	{
 		data->philo_dead = true;
-		sem_wait(data->stop);
-		sem_post(data->dead);
+		sem_wait(data->writing);
 		printf("%lld	%d is dead\n", get_time_from_start(data->t_start), philo->pos + 1);
 		return (1);
 	}
