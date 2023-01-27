@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 15:21:35 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 15:58:36 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@
 # define PHILO_DIED		" died\n"
 
 // error
+# define TCREAT			"Error while creating/joining threads"
+# define TJOIN			"Error while creating/joining threads"
 # define MALLOC			"Error caused by a malloc"
 # define SEM_OPEN		"Error caused by a semaphore open"
 # define SEM_CLOSE		"Error caused by a semaphore close"
@@ -56,11 +58,12 @@ positive integer between 1 and 200"
 
 typedef struct s_philo
 {
-	int				pos;
-	int				meal_count;
-	pthread_t		thread;
-	long long		t_until_die;
-	void			*data_mem;
+	int			pos;
+	int			meal_count;
+	pthread_t	thread;
+	pthread_t	monitor;
+	long long	t_until_die;
+	void		*data_mem;
 }				t_philo;
 
 typedef struct s_input
@@ -76,7 +79,6 @@ typedef struct s_data
 {
 	t_input		input;
 	t_philo		philo[200];
-	pthread_t	monitor;
 	sem_t		*dead;
 	bool		philo_dead;
 	long long	t_start;
@@ -97,7 +99,7 @@ void		*checker(void *arg);
 
 // routine.c
 int			check(t_data *data);
-void		routine(t_data *data, t_philo *philo);
+int			child(t_data *data, t_philo *philo);
 int			should_die(t_data *data, t_philo *philo);
 int			life_loop(t_data *data, t_philo *philo);
 void		one_philo(t_data *data);

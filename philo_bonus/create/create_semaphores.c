@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:01:54 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 15:20:55 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:21:53 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ int	init_semaphores(t_data *data)
 
 void	destroy_semaphore(t_data *data)
 {
-	sem_close(data->fork);
-	sem_unlink("/fork_sem");
-	sem_close(data->writing);
-	sem_unlink("/stop_sem");
 	sem_close(data->dead);
 	sem_unlink("/dead_sem");
+	sem_close(data->writing);
+	sem_unlink("/stop_sem");
+	sem_close(data->fork);
+	sem_unlink("/fork_sem");
 }

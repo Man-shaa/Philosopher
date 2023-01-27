@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 15:29:07 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:31:01 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,16 @@ int	create_childs(t_data *data)
 		if (data->pid[i] == -1)
 			return (err_msg(FORK, 1), kill_process_until(data, i), 1);
 		if (data->pid[i] == 0)
-			routine(data, &data->philo[i]);
+			if (child(data, &data->philo[i]))
+				err_msg(TCREAT, 1);
 		i += 2;
 		if (i >= data->input.n_philo && i % 2 == 0)
 		{
 			i = 1;
-			ft_usleep(data, data->input.to_eat);
+			if (data->input.to_eat < data->input.to_die)
+				ft_usleep(data, data->input.to_eat);
+			else
+				ft_usleep(data, data->input.to_die / 2);
 		}
 	}
 	i = 0;
@@ -83,6 +87,12 @@ int	create_childs(t_data *data)
 		}
 		else
 		{
+			printf("%d status : %d\n", i, WEXITSTATUS(status));
+			if (WEXITSTATUS(status) == 0)
+			{
+				i++;
+				break ;
+			}
 			i = -1;
 			while (++i < data->input.n_philo)
 			{

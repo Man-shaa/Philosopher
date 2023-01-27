@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:52:59 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 14:02:45 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 16:18:20 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@
 // sortir sans message "X is dead" et ecrire le message seulement si cette valeur
 // est a 0
 
-// 3 1 300 300 parfois le 1 meurt a 300 au liee de 1 ( bloque par sem_wait 
-// de sa deuxieme fourchette)
+// 3 60 300 300 bloque a l'infini par l'attente de la 2eme fourchette
 
 int	main(int ac, char **av)
 {
