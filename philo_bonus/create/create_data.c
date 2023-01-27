@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 20:16:42 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/26 16:56:02 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 20:28:16 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	init_philo(t_data *data)
 		data->philo[i].meal_count = 0;
 		data->philo[i].pos = i;
 		data->philo[i].t_until_die = 0;
-		data->philo[i].thread = 0;
 		data->philo[i].data_mem = data;
 		i++;
 	}

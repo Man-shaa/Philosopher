@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 15:58:36 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 22:01:50 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ typedef struct s_philo
 {
 	int			pos;
 	int			meal_count;
-	pthread_t	thread;
 	pthread_t	monitor;
 	long long	t_until_die;
 	void		*data_mem;
@@ -79,9 +78,11 @@ typedef struct s_data
 {
 	t_input		input;
 	t_philo		philo[200];
-	sem_t		*dead;
+	pthread_t	thread;
 	bool		philo_dead;
 	long long	t_start;
+	sem_t		*dead;
+	sem_t		*remaining;
 	sem_t		*fork;
 	sem_t		*writing;
 	pid_t		pid[200];
@@ -95,7 +96,7 @@ int			sleeping(t_data *data, t_philo *philo);
 int			thinking(t_data *data, t_philo *philo);
 
 // checker.c
-void		*checker(void *arg);
+void		*check_dead(void *arg);
 
 // routine.c
 int			check(t_data *data);
@@ -137,7 +138,7 @@ int			parsing(int ac, char **av);
 
 // print.c
 int			err_msg(char *s1, int ret_val);
-int			print_action(t_philo *philo, t_data *data, char *action);
+int			print_action(t_philo *philo, t_data *data, char *action, char *color);
 
 // *********************************** UTILS **********************************
 

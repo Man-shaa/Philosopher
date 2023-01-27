@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 16:31:01 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 22:19:06 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	kill_process_until(t_data *data, int until)
 		usleep(100);
 		kill(data->pid[i], SIGKILL);
 		i += 2;
-		if (i >= until && i % 2 == 0)
+		if (i > until && i % 2 == 0)
 			i = 1;
 	}
 	return (0);
@@ -49,14 +49,59 @@ int	kill_process_until(t_data *data, int until)
 // 	return (0);
 // }
 
+int	wait_all_child(t_data *data)
+{
+	// int		status;
+	// pid_t	child_pid;
+	// int		i;
+
+	// i = 0;
+	// while (i < data->input.n_philo)
+	// {
+	// 	child_pid = waitpid(data->pid[i], &status, WNOHANG);
+	// 	if (child_pid == 0)
+	// 	{
+	// 		i++;
+	// 		if (i == data->input.n_philo)
+	// 			i = 0;
+	// 	}
+	// 	else
+	// 	{
+	// 		// printf("%d status : %d\n", i, WEXITSTATUS(status));
+	// 		// if (WEXITSTATUS(status) == 0)
+	// 		// {
+	// 		// 	i++;
+	// 		// 	break ;
+	// 		// }
+	// 		i = -1;
+	// 		while (++i < data->input.n_philo)
+	// 		{
+	// 			kill(data->pid[i], SIGKILL);
+	// 		}
+	// 		break ;
+	// 	}
+	// }
+	// destroy_semaphore(data);
+	int	i;
+	int	status;
+
+	i = -1;
+	waitpid(-1, &status, 0);
+	if (WIFEXITED(status))
+	{
+		while (++i < data->input.n_philo)
+			kill(data->pid[i], SIGKILL);
+	}
+	return (0);
+}
+
 int	create_childs(t_data *data)
 {
-	int		status;
 	int		i;
-	pid_t	child_pid;
 
 	i = 0;
 	data->t_start = get_time();
+
 	while (i < data->input.n_philo)
 	{
 		data->pid[i] = fork();
@@ -75,32 +120,7 @@ int	create_childs(t_data *data)
 				ft_usleep(data, data->input.to_die / 2);
 		}
 	}
-	i = 0;
-	while (i < data->input.n_philo)
-	{
-		child_pid = waitpid(data->pid[i], &status, WNOHANG);
-		if (child_pid == 0)
-		{
-			i++;
-			if (i == data->input.n_philo)
-				i = 0;
-		}
-		else
-		{
-			printf("%d status : %d\n", i, WEXITSTATUS(status));
-			if (WEXITSTATUS(status) == 0)
-			{
-				i++;
-				break ;
-			}
-			i = -1;
-			while (++i < data->input.n_philo)
-			{
-				kill(data->pid[i], SIGKILL);
-			}
-			break ;
-		}
-	}
-	destroy_semaphore(data);
+	wait_all_child(data);
+	pthread_detach(data->thread);
 	return (0);
 }

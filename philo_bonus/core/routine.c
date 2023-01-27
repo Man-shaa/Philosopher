@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 16:21:55 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/27 22:22:49 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,20 @@ void	*routine(void *arg)
 
 int	child(t_data *data, t_philo *philo)
 {
-	if (pthread_create(&philo->thread, NULL, routine, philo))
-		exit (1);
-	if (pthread_create(&philo->monitor, NULL, checker, philo))
-		exit (1);
-	if (pthread_join(philo->thread, NULL))
-		exit (1);
-	if (pthread_join(philo->monitor, NULL))
-		exit (1);
+	if (data->input.n_meal)
+	{
+		while (!should_die(data, philo) && philo->meal_count < data->input.n_meal)
+			if (life_loop(data, philo))
+				exit (0);
+	}
+	else
+	{
+		while (!should_die(data, philo))
+			if (life_loop(data, philo))
+				exit (0);
+	}
 	destroy_semaphore(data);
-	exit (0);
+	exit (1);
 }
 
 // Verifie si philo est mort, si oui set data->philo_dead a true
@@ -69,6 +73,8 @@ int	should_die(t_data *data, t_philo *philo)
 
 int	life_loop(t_data *data, t_philo *philo)
 {
+	if (pthread_create(&data->thread, NULL, check_dead, philo))
+		return (err_msg(TCREAT, 1));
 	if (should_die(data, philo))
 		return (1);
 	if (eating(data, philo))
@@ -83,6 +89,7 @@ int	life_loop(t_data *data, t_philo *philo)
 		return (4);
 	if (should_die(data, philo))
 		return (1);
+	pthread_detach(data->thread);
 	return (0);
 }
 
