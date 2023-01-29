@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:58:32 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 19:51:56 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 20:08:05 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	*check_dead(void *arg)
 	if (should_die(data, philo))
 	{
 		printf(" (%d) J'avais raison CHECKER !!!\n\n", philo->pos + 1);
-		// pthread_detach(philo->thread);
 		exit (1);
 	}
 	return (NULL);

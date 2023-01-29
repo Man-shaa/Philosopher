@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 19:43:14 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 20:08:24 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	wait_all_child(t_data *data)
 	waitpid(-1, &status, 0);
 	if (WEXITSTATUS(status) == 1)
 	{
-		// printf("Someone has exited with a death !\n\n");
 		while (++i < data->input.n_philo)
 			kill(data->pid[i], SIGKILL);
 		destroy_semaphore(data);
