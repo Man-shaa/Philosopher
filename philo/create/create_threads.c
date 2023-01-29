@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/25 14:37:11 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 20:05:17 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,10 @@ int	create_threads(t_data *data)
 		if (i >= data->input.n_philo && i % 2 == 0)
 		{
 			i = 1;
-			ft_usleep(data, 2);
+			if (data->input.to_eat < data->input.to_die)
+				ft_usleep(data, data->input.to_eat);
+			else
+				ft_usleep(data, data->input.to_die / 2);
 		}
 		usleep(30);
 	}
