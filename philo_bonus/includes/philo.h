@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 11:43:33 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 19:51:29 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ typedef struct s_philo
 	pthread_t	monitor;
 	long long	t_until_die;
 	void		*data_mem;
+	pthread_t	thread;
 }				t_philo;
 
 typedef struct s_input
@@ -78,7 +79,7 @@ typedef struct s_data
 {
 	t_input		input;
 	t_philo		philo[200];
-	pthread_t	thread;
+	bool		t_quit;
 	bool		philo_dead;
 	long long	t_start;
 	sem_t		*time;

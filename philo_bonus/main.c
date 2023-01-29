@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:52:59 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 23:43:17 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 19:02:23 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	main(int ac, char **av)
 	if (data.input.n_philo == 1)
 		return (one_philo(&data), 0);
 	if (create_childs(&data))
-		return (4);
+		return (destroy_semaphore(&data), 4);
 	destroy_semaphore(&data);
 	return (0);
 }

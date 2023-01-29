@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 12:59:21 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 19:51:09 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,32 @@
 
 int	child(t_data *data, t_philo *philo)
 {
-	if (data->input.n_meal)
+	while (!should_die(data, philo)
+		&& (!data->input.n_meal || philo->meal_count < data->input.n_meal))
 	{
-		while (!should_die(data, philo) && philo->meal_count
-			< data->input.n_meal)
+		if (life_loop(data, philo))
 		{
-			if (life_loop(data, philo))
-			{
-				// sem_wait(data->writing);
-				printf("Exit in child without goal\n");
-				// sem_post(data->writing);
-				exit (0);
-			}
+			printf("   (%d) Exit in child\n", philo->pos + 1);
+			pthread_detach(philo->thread);
+			destroy_semaphore(data);
+			exit (1);
 		}
 	}
-	else
+	if (should_die(data, philo))
 	{
-		while (!should_die(data, philo))
-		{
-			if (life_loop(data, philo))
-			{
-				// sem_wait(data->writing);
-				printf("Exit in child without goal\n");
-				// sem_post(data->writing);
-				exit (0);
-			}
-		}
+		printf("J'avais raison CHILD !!!!\n\n");
+		pthread_detach(philo->thread);
+		destroy_semaphore(data);
+		exit (1);
 	}
-	// sem_wait(data->writing);
-	printf("   (%d) has ended his routine !\n\n", philo->pos + 1);
-	// sem_post(data->writing);
+	printf(" 	 (%d) vivant et a mange le bon nombre de fois\n\n", philo->pos + 1);
+	pthread_detach(philo->thread);
 	destroy_semaphore(data);
-	exit (1);
+	exit (0);
 }
 
 // Verifie si philo est mort, si oui set data->philo_dead a true
-// Return 1 si le philo est mort, sinon 0;
+// Return 1 si le philo est mort, sinon return 0
 int	should_die(t_data *data, t_philo *philo)
 {
 	long long	time;
@@ -99,7 +89,7 @@ int	should_die(t_data *data, t_philo *philo)
 
 int	life_loop(t_data *data, t_philo *philo)
 {
-	if (pthread_create(&data->thread, NULL, check_dead, philo))
+	if (pthread_create(&philo->thread, NULL, check_dead, philo))
 		return (err_msg(TCREAT, 2));
 	if (should_die(data, philo))
 		return (1);
@@ -115,7 +105,7 @@ int	life_loop(t_data *data, t_philo *philo)
 		return (5);
 	if (should_die(data, philo))
 		return (1);
-	// pthread_detach(data->thread);
+	pthread_detach(philo->thread);
 	return (0);
 }
 

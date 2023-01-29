@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:58:32 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 11:58:19 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 19:51:56 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ int	is_philo_dead(t_philo *philo, t_data *data)
 	sem_post(data->time);
 	if (time > data->input.to_die)
 	{
+		sem_wait(data->dead);
 		data->philo_dead = true;
+		sem_post(data->dead);
 		sem_wait(data->writing);
 		printf("%lld	%d %sis dead%s\n", get_time_from_start(data->t_start),
 			philo->pos + 1, DEAD, DEFAULT);
@@ -31,6 +33,7 @@ int	is_philo_dead(t_philo *philo, t_data *data)
 	return (0);
 }
 
+// Return 1 si philo a mange le nombre de fois demande, sinon 0
 int	has_eaten(t_data *data, t_philo *philo)
 {
 	sem_wait(data->eat);
@@ -52,36 +55,20 @@ void	*check_dead(void *arg)
 	i = 0;
 	philo = (t_philo *)arg;
 	data = philo->data_mem;
-	if (data->input.n_meal)
+	while (!should_die(data, philo)
+		&& (!data->input.n_meal || !has_eaten(data, philo)))
 	{
-		while (!should_die(data, philo) && !has_eaten(data, philo))
+		if (is_philo_dead(philo, data))
 		{
-			if (is_philo_dead(philo, data))
-			{
-				// sem_wait(data->writing);
-				printf("MORT PAR CHECKER\n\n\n");
-				// sem_post(data->writing);
-				kill_process_until(data, data->input.n_philo);
-				return (NULL);
-			}
+			printf(" (%d) Mort durant checker !!!\n\n", philo->pos + 1);
+			exit (1);
 		}
 	}
-	else
+	if (should_die(data, philo))
 	{
-		while (!should_die(data, philo))
-		{
-			if (is_philo_dead(philo, data))
-			{
-				// sem_wait(data->writing);
-				printf("MORT PAR CHECKER\n\n\n");
-				// sem_post(data->writing);
-				kill_process_until(data, data->input.n_philo);
-				return (NULL);
-			}
-		}
+		printf(" (%d) J'avais raison CHECKER !!!\n\n", philo->pos + 1);
+		// pthread_detach(philo->thread);
+		exit (1);
 	}
-	// sem_wait(data->writing);
-	printf("FIN CHECKER !\n");
-	// sem_post(data->writing);
 	return (NULL);
 }
