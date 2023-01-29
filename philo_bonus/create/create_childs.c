@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 23:46:55 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 11:59:49 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,18 @@ int	wait_all_child(t_data *data)
 	waitpid(-1, &status, 0);
 	if (WEXITSTATUS(status) == 1)
 	{
+		printf("Someone has exited with a death !\n\n");
 		while (++i < data->input.n_philo)
 			kill(data->pid[i], SIGKILL);
 		return (0);
 	}
-	printf("va wait tout le monde\n\n");
+	printf("		Va wait tout le monde\n\n");
 	while (++i < data->input.n_philo)
+	{
+		printf("Attends la fin de %d\n", i);
 		waitpid(data->pid[i], NULL, 0);
+		printf("%d a termine !\n", i);
+	}
 	return (0);
 }
 
@@ -59,8 +64,7 @@ int	create_childs(t_data *data)
 		if (data->pid[i] == -1)
 			return (err_msg(FORK, 1), kill_process_until(data, i), 1);
 		if (data->pid[i] == 0)
-			if (child(data, &data->philo[i]))
-				err_msg(TCREAT, 1);
+			child(data, &data->philo[i]);
 		i += 2;
 		if (i >= data->input.n_philo && i % 2 == 0)
 		{

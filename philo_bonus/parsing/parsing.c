@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 14:52:50 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 23:44:01 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 11:39:15 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	is_positive_int(int ac, char **av)
 	i = 1;
 	while (i < ac)
 	{
-		if (!av[0])
+		if (!av[i][0])
 			return (err_msg(INT, 1));
 		if (is_num(av[i]))
 			return (err_msg(NUMBER, 1));

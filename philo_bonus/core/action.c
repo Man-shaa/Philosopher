@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:04:16 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 22:01:40 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 11:23:33 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@ int	eating(t_data *data, t_philo *philo)
 		return (1);
 	if (print_action(philo, data, EATING, RED))
 		return (1);
+	sem_wait(data->time);
 	philo->t_until_die = get_time();
+	sem_post(data->time);
 	ft_usleep_routine(data, philo, data->input.to_eat);
 	sem_post(data->fork);
 	sem_post(data->fork);
+	sem_wait(data->eat);
 	philo->meal_count++;
+	sem_post(data->eat);
 	return (0);
 }
 

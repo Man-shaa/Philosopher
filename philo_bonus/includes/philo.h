@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/27 23:44:33 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/29 11:43:33 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,9 @@ typedef struct s_data
 	pthread_t	thread;
 	bool		philo_dead;
 	long long	t_start;
+	sem_t		*time;
+	sem_t		*eat;
 	sem_t		*dead;
-	sem_t		*remaining;
 	sem_t		*fork;
 	sem_t		*writing;
 	pid_t		pid[200];
