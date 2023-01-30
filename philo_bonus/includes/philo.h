@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:25:28 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 19:51:29 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:26:49 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,8 +140,7 @@ int			parsing(int ac, char **av);
 
 // print.c
 int			err_msg(char *s1, int ret_val);
-int			print_action(t_philo *philo, t_data *data, char *action,
-				char *color);
+int			print_action(t_philo *philo, t_data *data, char *action);
 
 // *********************************** UTILS **********************************
 

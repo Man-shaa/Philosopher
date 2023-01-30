@@ -6,34 +6,11 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 15:33:07 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 19:51:09 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:39:32 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"../includes/philo.h"
-
-// void	*routine(void *arg)
-// {
-// 	t_philo	*philo;
-// 	t_data	*data;
-
-// 	philo = (t_philo *)arg;
-// 	data = (t_data *)philo->data_mem;
-// 	if (data->input.n_meal)
-// 	{
-// 		while (!should_die(data, philo) && philo->meal_count
-// 			< data->input.n_meal)
-// 			if (life_loop(data, philo))
-// 				return (NULL);
-// 	}
-// 	else
-// 	{
-// 		while (!should_die(data, philo))
-// 			if (life_loop(data, philo))
-// 				return (NULL);
-// 	}
-// 	return (NULL);
-// }
 
 int	child(t_data *data, t_philo *philo)
 {
@@ -42,20 +19,17 @@ int	child(t_data *data, t_philo *philo)
 	{
 		if (life_loop(data, philo))
 		{
-			printf("   (%d) Exit in child\n", philo->pos + 1);
-			pthread_detach(philo->thread);
+			usleep(1000);
 			destroy_semaphore(data);
 			exit (1);
 		}
 	}
 	if (should_die(data, philo))
 	{
-		printf("J'avais raison CHILD !!!!\n\n");
-		pthread_detach(philo->thread);
+		usleep(1000);
 		destroy_semaphore(data);
 		exit (1);
 	}
-	printf(" 	 (%d) vivant et a mange le bon nombre de fois\n\n", philo->pos + 1);
 	pthread_detach(philo->thread);
 	destroy_semaphore(data);
 	exit (0);
@@ -80,8 +54,8 @@ int	should_die(t_data *data, t_philo *philo)
 		data->philo_dead = true;
 		sem_post(data->dead);
 		sem_wait(data->writing);
-		printf("%lld	%d %sis dead%s\n", get_time_from_start(data->t_start),
-			philo->pos + 1, DEAD, DEFAULT);
+		printf("%lld	%d is dead\n", get_time_from_start(data->t_start),
+			philo->pos + 1);
 		return (1);
 	}
 	return (0);
@@ -92,27 +66,33 @@ int	life_loop(t_data *data, t_philo *philo)
 	if (pthread_create(&philo->thread, NULL, check_dead, philo))
 		return (err_msg(TCREAT, 2));
 	if (should_die(data, philo))
-		return (1);
+		return (pthread_detach(philo->thread), 1);
 	if (eating(data, philo))
-		return (3);
+		return (pthread_detach(philo->thread), 3);
 	if (should_die(data, philo))
-		return (1);
+		return (pthread_detach(philo->thread), 1);
 	if (sleeping(data, philo))
-		return (4);
+		return (pthread_detach(philo->thread), 4);
 	if (should_die(data, philo))
-		return (1);
+		return (pthread_detach(philo->thread), 1);
 	if (thinking(data, philo))
-		return (5);
+		return (pthread_detach(philo->thread), 5);
 	if (should_die(data, philo))
-		return (1);
+		return (pthread_detach(philo->thread), 1);
 	pthread_detach(philo->thread);
 	return (0);
 }
 
 void	one_philo(t_data *data)
 {
-	data->t_start = get_time();
-	printf("0	1%s", TAKEN_FORK);
-	ft_usleep(data, data->input.to_die);
-	printf("%ld	1%s", data->input.to_die, PHILO_DIED);
+	data->pid[0] = fork();
+	if (data->pid[0] == 0)
+	{
+		data->t_start = get_time();
+		printf("0	1%s", TAKEN_FORK);
+		ft_usleep(data, data->input.to_die);
+		printf("%ld	1%s", data->input.to_die, PHILO_DIED);
+	}
+	waitpid(data->pid[0], NULL, 0);
+	destroy_semaphore(data);
 }

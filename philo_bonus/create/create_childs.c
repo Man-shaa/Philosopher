@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:43:29 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 20:08:24 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:38:25 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,16 +39,14 @@ int	wait_all_child(t_data *data)
 	{
 		while (++i < data->input.n_philo)
 			kill(data->pid[i], SIGKILL);
-		destroy_semaphore(data);
 		return (0);
 	}
 	i = 0;
 	while (i < data->input.n_philo)
 	{
-		waitpid(data->pid[i], NULL, 0);
+		waitpid(data->pid[i], &status, 0);
 		i++;
 	}
-	destroy_semaphore(data);
 	return (0);
 }
 

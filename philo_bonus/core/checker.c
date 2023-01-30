@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 16:58:32 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 20:08:05 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:25:40 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ int	is_philo_dead(t_philo *philo, t_data *data)
 		data->philo_dead = true;
 		sem_post(data->dead);
 		sem_wait(data->writing);
-		printf("%lld	%d %sis dead%s\n", get_time_from_start(data->t_start),
-			philo->pos + 1, DEAD, DEFAULT);
+		printf("%lld	%d is dead\n", get_time_from_start(data->t_start),
+			philo->pos + 1);
 		return (1);
 	}
 	ft_usleep_routine(data, philo, 1);
@@ -60,14 +60,10 @@ void	*check_dead(void *arg)
 	{
 		if (is_philo_dead(philo, data))
 		{
-			printf(" (%d) Mort durant checker !!!\n\n", philo->pos + 1);
-			exit (1);
+			pthread_detach(philo->thread);
+			return (NULL);
 		}
 	}
-	if (should_die(data, philo))
-	{
-		printf(" (%d) J'avais raison CHECKER !!!\n\n", philo->pos + 1);
-		exit (1);
-	}
+	pthread_detach(philo->thread);
 	return (NULL);
 }

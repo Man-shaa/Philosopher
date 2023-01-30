@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 14:36:03 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 19:39:55 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:29:21 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,6 @@ void	ft_usleep_routine(t_data *data, t_philo *philo, long int time_in_ms)
 	{
 		if (should_die(data, philo))
 			return ;
-		usleep(time_in_ms / 20);
+		usleep(time_in_ms / 30);
 	}
 }

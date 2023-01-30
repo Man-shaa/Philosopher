@@ -6,7 +6,7 @@
 /*   By: msharifi <msharifi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 16:04:16 by msharifi          #+#    #+#             */
-/*   Updated: 2023/01/29 11:23:33 by msharifi         ###   ########.fr       */
+/*   Updated: 2023/01/30 13:26:40 by msharifi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 int	eating(t_data *data, t_philo *philo)
 {
 	sem_wait(data->fork);
-	if (print_action(philo, data, TAKEN_FORK, DEFAULT))
+	if (print_action(philo, data, TAKEN_FORK))
 		return (1);
 	sem_wait(data->fork);
-	if (print_action(philo, data, TAKEN_FORK, DEFAULT))
+	if (print_action(philo, data, TAKEN_FORK))
 		return (1);
-	if (print_action(philo, data, EATING, RED))
+	if (print_action(philo, data, EATING))
 		return (1);
 	sem_wait(data->time);
 	philo->t_until_die = get_time();
@@ -36,7 +36,7 @@ int	eating(t_data *data, t_philo *philo)
 
 int	sleeping(t_data *data, t_philo *philo)
 {
-	if (print_action(philo, data, SLEEPING, CYAN))
+	if (print_action(philo, data, SLEEPING))
 		return (1);
 	ft_usleep_routine(data, philo, data->input.to_sleep);
 	return (0);
@@ -44,7 +44,7 @@ int	sleeping(t_data *data, t_philo *philo)
 
 int	thinking(t_data *data, t_philo *philo)
 {
-	if (print_action(philo, data, THINKING, GREEN))
+	if (print_action(philo, data, THINKING))
 		return (1);
 	return (0);
 }
